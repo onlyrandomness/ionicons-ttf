@@ -1,0 +1,34 @@
+name: 'Sync SVGs from Upstream'
+
+on:
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sparse checkout upstream
+        run: |
+          git clone --filter=blob:none --sparse https://github.com/ionic-team/ionicons.git upstream-tmp
+          cd upstream-tmp
+          git sparse-checkout set src/svg package.json
+
+      - name: Copy SVGs and version
+        run: |
+          rsync -a --delete upstream-tmp/src/svg/ src/svg/
+          node -p "require('./upstream-tmp/package.json').version" > upstream-version
+          rm -rf upstream-tmp
+
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/svg upstream-version
+          git diff --cached --quiet && echo "No changes" && exit 0
+          VERSION=$(cat upstream-version)
+          git commit -m "sync: ionicons ${VERSION}"
+          git push
