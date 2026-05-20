@@ -30,7 +30,8 @@ jobs:
           fantasticon src/svg \
             --name ionicons \
             --output ttf-output \
-            --output-types ttf,json \
+            --font-types ttf \
+            --asset-types json \
             --font-height 512 \
             --normalize
           mv ttf-output/ionicons.ttf ttf-output/ionicons-${{ steps.version.outputs.value }}.ttf
