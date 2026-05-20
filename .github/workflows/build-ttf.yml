@@ -25,7 +25,9 @@ jobs:
         run: echo "value=$(cat upstream-version | tr -d '[:space:]')" >> $GITHUB_OUTPUT
 
       - name: Fix SVGs (convert strokes to fills)
-        run: oslllo-svg-fixer --source=src/svg --destination=tmp/svg --show-progress
+        run: |
+          mkdir -p tmp/svg
+          oslllo-svg-fixer --source=src/svg --destination=tmp/svg --show-progress
 
       - name: Generate TTF
         run: |
