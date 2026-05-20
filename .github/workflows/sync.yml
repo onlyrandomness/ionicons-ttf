@@ -15,7 +15,8 @@ jobs:
         run: |
           git clone --filter=blob:none --sparse https://github.com/ionic-team/ionicons.git upstream-tmp
           cd upstream-tmp
-          git sparse-checkout set src/svg package.json
+          git sparse-checkout set src/svg
+          git checkout HEAD -- package.json
 
       - name: Copy SVGs and version
         run: |
