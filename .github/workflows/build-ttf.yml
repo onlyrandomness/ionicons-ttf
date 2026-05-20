@@ -17,17 +17,20 @@ jobs:
 
       - uses: actions/setup-node@v4
 
-      - name: Install fantasticon
-        run: npm install -g fantasticon
+      - name: Install tools
+        run: npm install -g oslllo-svg-fixer fantasticon
 
       - name: Get version
         id: version
         run: echo "value=$(cat upstream-version | tr -d '[:space:]')" >> $GITHUB_OUTPUT
 
+      - name: Fix SVGs (convert strokes to fills)
+        run: oslllo-svg-fixer --source=src/svg --destination=tmp/svg --show-progress
+
       - name: Generate TTF
         run: |
           mkdir -p ttf-output
-          fantasticon src/svg \
+          fantasticon tmp/svg \
             --name ionicons \
             --output ttf-output \
             --font-types ttf \
