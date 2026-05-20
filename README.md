@@ -12,4 +12,6 @@ Each release includes:
 
 ## Updating
 
-To sync the latest SVGs from upstream, run the **Sync SVGs from Upstream** workflow manually from the Actions tab. If new icons are detected, a commit is pushed to main which triggers a new TTF build and release automatically.
+The **Sync SVGs from Upstream** workflow runs daily at midnight UTC. If upstream has changed, it commits the updated SVGs to main which triggers a new TTF build and release automatically.
+
+The sync can also be triggered manually from the Actions tab.
